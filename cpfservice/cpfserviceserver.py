@@ -17,12 +17,15 @@ class CpfServiceServer(ServiceServerBase):
     def _run_recv_requests(self) -> None:
         while True:
             cli, _ = self._socket.accept()
-            data = cli.recv(self._len_buffer)
+            data_raw = cli.recv(self._len_buffer)
 
-            cpf = str(data, 'utf-8')
-            cpf_is_valid = is_valid_cpf(cpf)
+            data = json.loads(data_raw)
+            cpf_is_valid = is_valid_cpf(data['cpf'])
+            cpf_result_text = 'CPF VÁLIDO' if cpf_is_valid else "CPF INVÁLIDO"
 
-            cli.send(bytes(cpf_is_valid))
+            data_send = {'res': cpf_result_text}
+
+            cli.send(bytes(json.dumps(data_send), 'utf-8'))
             cli.close()
 
     def _register_server_name(self) -> None:
