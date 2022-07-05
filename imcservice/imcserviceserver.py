@@ -1,6 +1,7 @@
 import json
 from socket import socket, AF_INET
 from serviceserverutils.serviceserverbase import ServiceServerBase
+from imcservice.imccalc import imc_predict
 
 
 class ImcServiceServer(ServiceServerBase):
@@ -16,9 +17,14 @@ class ImcServiceServer(ServiceServerBase):
     def _run_recv_requests(self) -> None:
         while True:
             cli, _ = self._socket.accept()
-            data = cli.recv(self._len_buffer)
+            data_raw = cli.recv(self._len_buffer)
 
-            cli.send(bytes(''))
+            data = json.loads(data_raw)
+            imc_pred = imc_predict(data['weight'], data['height'])
+
+            data_send = {'imc': imc_pred[0], 'class': imc_pred[1]}
+
+            cli.send(bytes(json.dumps(data_send), 'utf-8'))
             cli.close()
 
     def _register_server_name(self) -> None:
