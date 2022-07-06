@@ -49,9 +49,14 @@ class NameServiceServer(ServiceServerBase):
                 self._show_services()
             else:
                 service = self.get_service(data['service'])
-                data_send = {'host': service['host'], 'port': service['port']}
 
-                cli.send(bytes(json.dumps(data_send), 'utf-8'))
+                if (service is None) or not(service['status']):
+                    cli.send(b'')
+                else:
+                    data_send = {
+                        'host': service['host'], 'port': service['port']}
+                    cli.send(bytes(json.dumps(data_send), 'utf-8'))
+
                 cli.close()
 
     def _check_server_status(self) -> None:
