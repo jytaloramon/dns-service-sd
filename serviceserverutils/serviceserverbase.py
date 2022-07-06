@@ -1,5 +1,5 @@
+import json
 from socket import AF_INET, socket
-from tkinter import E
 
 
 class ServiceServerBase:
@@ -24,8 +24,16 @@ class ServiceServerBase:
     def _run_recv_requests(self) -> None:
         pass
 
-    def _register_server_name(self) -> None:
-        pass
+    def _register_server_name(self, host: str, port: int) -> None:
+
+        data = {'name': self._service_name,
+                'host': self._host, 'port': self._port}
+
+        s = socket(AF_INET)
+        s.connect((host, port))
+
+        s.send(bytes(json.dumps(data), 'utf-8'))
+        s.close()
 
     def _has_service_up(self, host: str, port: int) -> bool:
 

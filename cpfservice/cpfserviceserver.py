@@ -1,5 +1,4 @@
 import json
-from socket import socket, AF_INET
 from cpfservice.cfpvalidation import is_valid_cpf
 from serviceserverutils.serviceserverbase import ServiceServerBase
 
@@ -10,7 +9,7 @@ class CpfServiceServer(ServiceServerBase):
 
         super().__init__('cpfservice', host, port)
 
-        self._register_server_name()
+        self._register_server_name('localhost', 35750)
 
         self._run_recv_requests()
 
@@ -27,18 +26,3 @@ class CpfServiceServer(ServiceServerBase):
 
             cli.send(bytes(json.dumps(data_send), 'utf-8'))
             cli.close()
-
-    def _register_server_name(self) -> None:
-
-        host = ''
-        port = 6666
-
-        data = {'name': self._service_name,
-                'host': self._host, 'port': self._port}
-
-        s = socket(AF_INET)
-        s.connect((host, port))
-
-        s.send(bytes(json.dumps(data), 'utf-8'))
-
-        data_res = s.recv(self._len_buffer)
