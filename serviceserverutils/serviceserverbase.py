@@ -1,5 +1,6 @@
 import json
 from socket import AF_INET, socket
+from time import sleep
 
 
 class ServiceServerBase:
@@ -23,7 +24,7 @@ class ServiceServerBase:
 
     def _register_server_name(self, host: str, port: int) -> None:
 
-        data = {'name': self._service_name,
+        data = {'type': 'register', 'name': self._service_name,
                 'host': self._host, 'port': self._port}
 
         s = socket(AF_INET)

@@ -4,7 +4,7 @@ from cpfservice.cpfserviceserver import CpfServiceServer
 def main():
 
     HOST = 'localhost'
-    PORT = 35751
+    PORT = 35755
 
     cpf_server = CpfServiceServer(HOST, PORT)
 

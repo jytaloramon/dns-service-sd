@@ -42,11 +42,17 @@ class NameServiceServer(ServiceServerBase):
             data_raw = cli.recv(self._len_buffer)
 
             data = json.loads(data_raw)
-            self.add_service(data['name'], data['host'], data['port'])
 
-            cli.close()
+            if data['type'] == 'register':
+                cli.close()
+                self.add_service(data['name'], data['host'], data['port'])
+                self._show_services()
+            else:
+                service = self.get_service(data['service'])
+                data_send = {'host': service['host'], 'port': service['port']}
 
-            self._show_services()
+                cli.send(bytes(json.dumps(data_send), 'utf-8'))
+                cli.close()
 
     def _check_server_status(self) -> None:
 
@@ -70,7 +76,7 @@ class NameServiceServer(ServiceServerBase):
     def _show_services(self) -> None:
 
         char_div = '-'
-        h = ['Service', 'Status', 'Host/port', 'History']
+        h = ['Service', 'Ativo', 'Host/port', 'Historic']
 
         print(f'+{char_div:-^19}+{char_div:-^9}+{char_div:-^24}+{char_div:-^24}+')
         print(f'|{h[0]:^19}|{h[1]:^9}|{h[2]:^24}|{h[3]:^24}|')
@@ -78,7 +84,7 @@ class NameServiceServer(ServiceServerBase):
 
         for s, d in self._services.items():
             n = s
-            st = d['status']
+            st = 'sim' if d['status'] else 'não'
             hp = d['host'] + '/' + str(d['port'])
             h = d['history']
 
@@ -96,3 +102,5 @@ class NameServiceServer(ServiceServerBase):
 
             print(
                 f'+{char_div:-^19}+{char_div:-^9}+{char_div:-^24}+{char_div:-^24}+')
+
+        print('\n')

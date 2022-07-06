@@ -1,4 +1,5 @@
 import json
+from operator import le
 from cpfservice.cfpvalidation import is_valid_cpf
 from serviceserverutils.serviceserverbase import ServiceServerBase
 
@@ -18,11 +19,14 @@ class CpfServiceServer(ServiceServerBase):
             cli, _ = self._socket.accept()
             data_raw = cli.recv(self._len_buffer)
 
-            data = json.loads(data_raw)
-            cpf_is_valid = is_valid_cpf(data['cpf'])
-            cpf_result_text = 'CPF VÁLIDO' if cpf_is_valid else "CPF INVÁLIDO"
+            if len(data_raw) > 0:
 
-            data_send = {'res': cpf_result_text}
+                data = json.loads(data_raw)
+                cpf_is_valid = is_valid_cpf(data['cpf'])
+                cpf_result_text = 'CPF VÁLIDO' if cpf_is_valid else "CPF INVÁLIDO"
 
-            cli.send(bytes(json.dumps(data_send), 'utf-8'))
+                data_send = {'res': cpf_result_text}
+
+                cli.send(bytes(json.dumps(data_send), 'utf-8'))
+
             cli.close()
