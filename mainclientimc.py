@@ -1,5 +1,4 @@
-import json
-from socket import socket, AF_INET
+from clientserviceutils.client_req_utils import get_servname_service_info, get_service_operation
 
 
 def main():
@@ -15,20 +14,12 @@ def main():
         weight = float(input('Digite seu peso (Kg): '))
         height = float(input('Digite sua altura (m): '))
 
-        sn = socket(AF_INET)
-        sn.connect((HOST_SERVER_NAME, PORT_SERVER_NAME))
+        data_res = get_servname_service_info(
+            HOST_SERVER_NAME, PORT_SERVER_NAME, 'imcservice')
 
-        data_sn = {'type': 'get', 'service': 'imcservice'}
-
-        sn.send(bytes(json.dumps(data_sn), 'utf-8'))
-        data_sn_raw = sn.recv(BUFFER_LEN)
-        sn.close()
-
-        if len(data_sn_raw) == 0:
-            print(f' - Servidor não encontrado ou Inativo')
+        if data_res is None:
+            print(f' - Servidor não encontrado ou Inativo\n')
             continue
-
-        data_res = json.loads(data_sn_raw)
 
         host_service, port_service = data_res['host'], data_res['port']
 
@@ -36,16 +27,10 @@ def main():
         print(
             f' - Info. Servidor da Requisição: host({host_service}) / port({port_service})')
 
-        s_simc = socket(AF_INET)
-        s_simc.connect((host_service, port_service))
-
         data_imc = {'weight': weight, 'height': height}
 
-        s_simc.send(bytes(json.dumps(data_imc), 'utf-8'))
-        data_imc_raw = s_simc.recv(BUFFER_LEN)
-        s_simc.close()
-
-        data_imc_res = json.loads(data_imc_raw)
+        data_imc_res = get_service_operation(
+            host_service, port_service, data_imc)
 
         print(' - Resultado')
         print(f'   - imc: {data_imc_res["imc"]}')
