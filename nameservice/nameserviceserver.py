@@ -3,7 +3,6 @@ from threading import Thread
 from time import sleep
 from typing import Dict
 from serviceserverutils.serviceserverbase import ServiceServerBase
-from serviceserverutils.logger import LoggerService
 
 
 class NameServiceServer(ServiceServerBase):
@@ -11,8 +10,6 @@ class NameServiceServer(ServiceServerBase):
     def __init__(self, host: str, port: int, bacKlog: int = 50) -> None:
 
         self._services: Dict[str, Dict[str, any]] = {}
-        self._count_event = 1
-        self._logger = LoggerService()
 
         super().__init__('nameservice', host, port)
 

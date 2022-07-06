@@ -2,6 +2,8 @@ import json
 from socket import AF_INET, socket
 from time import sleep
 
+from serviceserverutils.logger import LoggerService
+
 
 class ServiceServerBase:
 
@@ -12,6 +14,9 @@ class ServiceServerBase:
         self._port = port
         self._backlog = bacKlog
         self._len_buffer = 1024
+
+        self._count_event = 1
+        self._logger = LoggerService()
 
         self._socket = socket(AF_INET)
         self._socket.bind((host, port))
