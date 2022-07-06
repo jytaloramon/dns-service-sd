@@ -3,6 +3,7 @@ from threading import Thread
 from time import sleep
 from typing import Dict
 from serviceserverutils.serviceserverbase import ServiceServerBase
+from serviceserverutils.logger import LoggerService
 
 
 class NameServiceServer(ServiceServerBase):
@@ -10,6 +11,8 @@ class NameServiceServer(ServiceServerBase):
     def __init__(self, host: str, port: int, bacKlog: int = 50) -> None:
 
         self._services: Dict[str, Dict[str, any]] = {}
+        self._count_event = 1
+        self._logger = LoggerService()
 
         super().__init__('nameservice', host, port)
 
@@ -43,21 +46,32 @@ class NameServiceServer(ServiceServerBase):
 
             data = json.loads(data_raw)
 
+            event_id = self._count_event
+            self._count_event += 1
+
             if data['type'] == 'register':
-                cli.close()
                 self.add_service(data['name'], data['host'], data['port'])
+
+                self._logger.push_event(event_id, 'register', data)
                 self._show_services()
+                self._logger.pop_show_event(event_id)
             else:
                 service = self.get_service(data['service'])
+                self._logger.push_event(event_id, 'get', data)
 
                 if (service is None) or not(service['status']):
                     cli.send(b'')
+                    self._logger.push_event(event_id, 'response', 'Not Found')
                 else:
                     data_send = {
                         'host': service['host'], 'port': service['port']}
+
                     cli.send(bytes(json.dumps(data_send), 'utf-8'))
 
-                cli.close()
+                    self._logger.push_event(event_id, 'response', data_send)
+                    self._logger.pop_show_event(event_id)
+
+            cli.close()
 
     def _check_server_status(self) -> None:
 
@@ -70,10 +84,15 @@ class NameServiceServer(ServiceServerBase):
             for k, d in self._services.items():
 
                 if d['status'] and not(self._has_service_up(d['host'], d['port'])):
+                    event_id = self._count_event
+                    self._count_event += 1
+
                     self.add_service(k, '', 0, False)
+                    self._logger.push_event(event_id, 'Service Down', k)
                     has_update = True
 
             if has_update:
+                self._logger.pop_show_event(event_id)
                 self._show_services()
 
             sleep(5)
