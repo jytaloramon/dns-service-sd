@@ -31,4 +31,4 @@ class LoggerService:
         for e in events:
             print(f' - {e[0]} => {e[1]}')
 
-        print('\n')
+        print('')
