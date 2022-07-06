@@ -26,7 +26,7 @@ def imc_class_predict(imc: float) -> str:
 
 def imc_predict(weight: float, height: float) -> Tuple[float, str]:
 
-    imc = imc_calculate(weight)
+    imc = imc_calculate(weight, height)
     imc_class = imc_class_predict(imc)
 
     return (imc, imc_class)
