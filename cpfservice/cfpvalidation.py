@@ -22,13 +22,13 @@ def is_valid_cpf(cpf: str) -> bool:
 
     s1 = sum(map(lambda x, y: int(x) * y, cpf_a[:9], list(range(10, 1, -1))))
     res1 = s1 % 11
-    d1 = 0 if s1 < 2 else 11 - res1
+    d1 = 0 if res1 < 2 else 11 - res1
 
     if not(int(cpf_a[9]) == d1):
         return False
 
     s2 = sum(map(lambda x, y: int(x) * y, cpf_a[:10], list(range(11, 1, -1))))
     res2 = s2 % 11
-    d2 = 0 if s2 < 2 else 11 - res2
+    d2 = 0 if res2 < 2 else 11 - res2
 
     return int(cpf_a[10]) == d2
