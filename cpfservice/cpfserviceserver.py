@@ -28,4 +28,9 @@ class CpfServiceServer(ServiceServerBase):
 
                 cli.send(bytes(json.dumps(data_send), 'utf-8'))
 
+                event_id = self._get_logger_id()
+                self._logger.push_event(event_id, 'Request', data)
+                self._logger.push_event(event_id, 'Reponse', data_send)
+                self._logger.pop_show_event(event_id)
+
             cli.close()
