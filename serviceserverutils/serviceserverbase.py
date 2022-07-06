@@ -24,6 +24,13 @@ class ServiceServerBase:
 
         self._show_info_service()
 
+    def _get_logger_id(self) -> None:
+
+        id = self._count_event
+        self._count_event += 1
+
+        return id
+
     def _run_recv_requests(self) -> None:
         pass
 

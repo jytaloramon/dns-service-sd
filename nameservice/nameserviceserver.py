@@ -43,18 +43,17 @@ class NameServiceServer(ServiceServerBase):
 
             data = json.loads(data_raw)
 
-            event_id = self._count_event
-            self._count_event += 1
+            event_id = self._get_logger_id()
 
             if data['type'] == 'register':
                 self.add_service(data['name'], data['host'], data['port'])
 
-                self._logger.push_event(event_id, 'register', data)
-                self._show_services()
+                self._logger.push_event(event_id, 'Request', data)
                 self._logger.pop_show_event(event_id)
+                self._show_services()
             else:
                 service = self.get_service(data['service'])
-                self._logger.push_event(event_id, 'get', data)
+                self._logger.push_event(event_id, 'Request', data)
 
                 if (service is None) or not(service['status']):
                     cli.send(b'')
@@ -81,8 +80,7 @@ class NameServiceServer(ServiceServerBase):
             for k, d in self._services.items():
 
                 if d['status'] and not(self._has_service_up(d['host'], d['port'])):
-                    event_id = self._count_event
-                    self._count_event += 1
+                    event_id = self._get_logger_id()
 
                     self.add_service(k, '', 0, False)
                     self._logger.push_event(event_id, 'Service Down', k)
