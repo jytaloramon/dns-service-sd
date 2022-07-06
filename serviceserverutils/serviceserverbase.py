@@ -16,10 +16,7 @@ class ServiceServerBase:
         self._socket.bind((host, port))
         self._socket.listen(bacKlog)
 
-        print(f'Service (UP): {self._service_name} ')
-        print(f'- Host: {self._host}')
-        print(f'- Port: {self._port}')
-        print('--------+--------+--------+--------', end='\n\n')
+        self._show_info_service()
 
     def _run_recv_requests(self) -> None:
         pass
@@ -47,3 +44,10 @@ class ServiceServerBase:
             pass
 
         return False
+
+    def _show_info_service(self) -> None:
+
+        print(f'Service (UP): {self._service_name} ')
+        print(f'- Host: {self._host}')
+        print(f'- Port: {self._port}')
+        print('--------+--------+--------+--------', end='\n\n')
