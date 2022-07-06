@@ -1,5 +1,4 @@
 import json
-from socket import socket, AF_INET
 from serviceserverutils.serviceserverbase import ServiceServerBase
 from imcservice.imccalc import imc_predict
 
@@ -10,7 +9,7 @@ class ImcServiceServer(ServiceServerBase):
 
         super().__init__('imcservice', host, port)
 
-        self._register_server_name('localhost', 35750)
+        self._register_server_name('localhost', 20467)
 
         self._run_recv_requests()
 

@@ -6,7 +6,7 @@ def main():
 
     BUFFER_LEN = 1024
     HOST_SERVER_NAME = 'localhost'
-    PORT_SERVER_NAME = 35750
+    PORT_SERVER_NAME = 20467
 
     print('-------- IMC CALCULADORA --------\n')
 

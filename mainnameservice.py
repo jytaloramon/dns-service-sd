@@ -4,7 +4,7 @@ from nameservice.nameserviceserver import NameServiceServer
 def main():
 
     HOST = 'localhost'
-    PORT = 35750
+    PORT = 20467
 
     name_server = NameServiceServer(HOST, PORT)
 

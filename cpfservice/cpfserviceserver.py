@@ -1,5 +1,4 @@
 import json
-from operator import le
 from cpfservice.cfpvalidation import is_valid_cpf
 from serviceserverutils.serviceserverbase import ServiceServerBase
 
@@ -10,7 +9,7 @@ class CpfServiceServer(ServiceServerBase):
 
         super().__init__('cpfservice', host, port)
 
-        self._register_server_name('localhost', 35750)
+        self._register_server_name('localhost', 20467)
 
         self._run_recv_requests()
 
