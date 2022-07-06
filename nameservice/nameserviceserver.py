@@ -1,5 +1,5 @@
 import json
-from socket import socket, AF_INET
+from threading import Thread
 from time import sleep
 from typing import Dict
 from serviceserverutils.serviceserverbase import ServiceServerBase
@@ -13,20 +13,24 @@ class NameServiceServer(ServiceServerBase):
 
         super().__init__('nameservice', host, port)
 
-    def add_service(self, name: str, host: str, port: int) -> None:
+        t_recv = Thread(target=self._run_recv_requests)
+        t_recv.start()
+        self._check_server_status()
+
+    def add_service(self, name: str, host: str, port: int, status: bool = True) -> None:
 
         service = self.get_service(name)
 
-        if service is None:
-            self._services[name] = {
-                'host': host, 'port': port, 'active': True, 'history': []
-            }
+        if not(service is None):
+            service['history'].append(f'{service["host"]}/{service["port"]}')
+            service['host'] = host
+            service['port'] = port
+            service['status'] = status
 
             return
 
-        service['host'] = host
-        service['port'] = port
-        service['status'] = True
+        self._services[name] = {'host': host,
+                                'port': port, 'status': status, 'history': []}
 
     def get_service(self, name: str) -> Dict[str, any]:
 
@@ -38,12 +42,11 @@ class NameServiceServer(ServiceServerBase):
             data_raw = cli.recv(self._len_buffer)
 
             data = json.loads(data_raw)
-            #imc_pred = imc_predict(data['weight'], data['height'])
+            self.add_service(data['name'], data['host'], data['port'])
 
-            #data_send = {'imc': imc_pred[0], 'class': imc_pred[1]}
-
-            #cli.send(bytes(json.dumps(data_send), 'utf-8'))
             cli.close()
+
+            self._show_services()
 
     def _check_server_status(self) -> None:
 
@@ -53,17 +56,14 @@ class NameServiceServer(ServiceServerBase):
         while status:
             has_update = False
 
-            for k, d in self._services.values():
-                status_service = self._has_service_up(d['host'], d['port'])
+            for k, d in self._services.items():
 
-                if not(status_service):
-                    d['status'] = False
-                    d['history'].append(f'{d["host"]}/{d["port"]}')
-                    d['host'], d['port'] = '', 0
+                if d['status'] and not(self._has_service_up(d['host'], d['port'])):
+                    self.add_service(k, '', 0, False)
                     has_update = True
 
             if has_update:
-                pass
+                self._show_services()
 
             sleep(5)
 
