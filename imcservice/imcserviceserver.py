@@ -21,10 +21,16 @@ class ImcServiceServer(ServiceServerBase):
 
             if len(data_raw) > 0:
                 data = json.loads(data_raw)
+
                 imc_pred = imc_predict(data['weight'], data['height'])
 
                 data_send = {'imc': imc_pred[0], 'class': imc_pred[1]}
 
                 cli.send(bytes(json.dumps(data_send), 'utf-8'))
+
+                event_id = self._get_logger_id()
+                self._logger.push_event(event_id, 'Request', data)
+                self._logger.push_event(event_id, 'Reponse', data_send)
+                self._logger.pop_show_event(event_id)
 
             cli.close()
