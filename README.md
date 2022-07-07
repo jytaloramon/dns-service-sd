@@ -1,7 +1,10 @@
 # Serviço de Nomes
-##### Entrega: 10 de julho de 2022 às 23:59
 
-## Instruções
+#### Disciplina: Sistema Distribuído 
+#### Professo: Tércio Morais
+#### Entrega: 10 de julho de 2022 às 23:59
+
+## Descrição da Atividade
 
 - O objetivo deste trabalho é construir um sistemas de nomes simples para dois serviços:
     1. Validação de CPF
@@ -12,7 +15,21 @@
     1. Ao iniciar a aplicação servidora, esta deve se registrar no serviço de nomes (binding)​
     2. A aplicação cliente deverá solicitar ao serviço de nomes um dos dois serviços implementados (lookup), informando o seu nome
     3. Com a resposta do serviço de nomes, o cliente poderá executar a chamada remota do serviço.
-
-![alt](lookup.png)
-
 - Trabalho em dupla
+
+![Diagrama de fluxo do projeto](lookup.png)
+*Diagrama de fluxo do projeto*
+
+
+## Instruções de Execução
+
+1. Servidor de Nome
+   - *# python mainnameservice.py*
+2. Servidor de Serviço (CPF)
+   - *# python maincpfservice.py*
+3. Servidor de Serviço (IMC)
+   = *# python mainimcservice.py*
+4. Cliente (CPF)
+   - *# python mainclientcpf.py*
+5. Cliente (IMC)
+   - *# python mainclientimc.py*
