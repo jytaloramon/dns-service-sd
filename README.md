@@ -1,8 +1,16 @@
 # Serviço de Nomes
 
-#### Disciplina: Sistema Distribuído 
-#### Professo: Tércio Morais
-#### Entrega: 10 de julho de 2022 às 23:59
+**Universidade Federal de Alagoas - UFAL**
+
+Aluno: José Ytalo Ramon de Almeida Gonçalves - 19111001
+
+Disciplina: Sistema Distribuído (2021.1)
+
+Professo: Tércio de Morais
+
+Entrega: 10 de julho de 2022 às 23:59
+
+</br>
 
 ## Descrição da Atividade
 
@@ -23,13 +31,18 @@
 
 ## Instruções de Execução
 
-1. Servidor de Nome
-   - *# python mainnameservice.py*
-2. Servidor de Serviço (CPF)
+1. [Servidor de Nome](./nameservice/)
+   - *# python mainnameservice.py* 
+2. [Servidor de Serviço (CPF)](./cpfservice/)
    - *# python maincpfservice.py*
-3. Servidor de Serviço (IMC)
-   = *# python mainimcservice.py*
-4. Cliente (CPF)
+3. [Servidor de Serviço (IMC)](./imcservice/)
+   - *# python mainimcservice.py*
+4. [Cliente (CPF)](./mainclientcpf.py)
    - *# python mainclientcpf.py*
-5. Cliente (IMC)
+5. [Cliente (IMC)](./mainclientimc.py)
    - *# python mainclientimc.py*
+
+## Vídeo de Execução do Projeto
+
+[![Thumbnail Youtube](https://img.youtube.com/vi/7mfYC5fIoEo/0.jpg)](https://youtu.be/7mfYC5fIoEo)
+*Link: <https://youtu.be/7mfYC5fIoEo>*
