@@ -4,7 +4,7 @@
 
 Aluno: José Ytalo Ramon de Almeida Gonçalves - 19111001
 
-Disciplina: Sistema Distribuído (2021.1)
+Disciplina: Sistema Distribuído (2021.2)
 
 Professo: Tércio de Morais
 
