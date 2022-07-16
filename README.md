@@ -44,5 +44,7 @@ Entrega: 10 de julho de 2022 às 23:59
 
 ## Vídeo de Execução do Projeto
 
-[![Thumbnail Youtube](https://img.youtube.com/vi/7mfYC5fIoEo/0.jpg)](https://youtu.be/7mfYC5fIoEo)
-*Link: <https://youtu.be/7mfYC5fIoEo>*
+
+|    [![Thumbnail Youtube](https://img.youtube.com/vi/7mfYC5fIoEo/0.jpg)](https://youtu.be/7mfYC5fIoEo)    |
+| :------------------------------------: |
+| *Link: <https://youtu.be/7mfYC5fIoEo>* |
